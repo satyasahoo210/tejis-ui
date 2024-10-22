@@ -1,11 +1,17 @@
 import { JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import {
+  NavigationStart,
+  Router,
+  RouterModule,
+  RouterOutlet,
+} from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, JsonPipe],
+  imports: [RouterOutlet, JsonPipe, RouterModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -15,36 +21,43 @@ export class AppComponent {
     {
       label: 'Dashboard',
       icon: 'dashboard',
-      route: '/dashboard',
-      active: this.router.url === '/',
+      route: '/',
     },
     {
       label: 'Programs',
       icon: 'programs',
       route: '/programs',
-      active: this.router.url === '/programs',
     },
     {
       label: 'General Intelligence',
       icon: 'general_intelligence',
       route: '/general_intelligence',
-      active: this.router.url === '/general_intelligence',
     },
     {
       label: 'Demolition',
       icon: 'demolition',
       route: '/demolition',
-      active: this.router.url === '/demolition',
     },
     {
       label: 'Search DSI',
       icon: 'search_dsi',
       route: '/search',
-      active: this.router.url === '/search',
     },
   ];
-
   expanded = false;
+  activeUrl = '';
+  hederLabel = '';
+
+  ngOnInit() {
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationStart))
+      .subscribe((event) => {
+        this.activeUrl = event.url;
+        this.hederLabel =
+          this.menuItems.find((item) => item.route === event.url)?.label ??
+          'Hello, Analyst!';
+      });
+  }
 
   closeSidebar() {
     this.expanded = false;

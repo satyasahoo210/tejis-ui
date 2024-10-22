@@ -33,10 +33,11 @@
       class="flex flex-col items-center justify-start gap-4 mt-6 w-full h-full"
     >
       @for (item of menuItems; track $index) {
-      <div
+      <a
         class="flex items-center justify-center py-4 px-8 cursor-pointer w-full hover:bg-gray-50 [[data-expanded=true]_&]:justify-start [&.active]:border-l-4 [&.active]:border-blue-500 [&.active]:font-bold {{
-          item.active ? 'active' : ''
+          item.route === activeUrl ? 'active' : ''
         }}"
+        [routerLink]="[item.route]"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +50,7 @@
           <use [attr.href]="'icons.svg#' + item.icon"></use>
         </svg>
         <span class="[[data-expanded=false]_&]:hidden">{{ item.label }}</span>
-      </div>
+      </a>
       }
     </div>
 
@@ -68,49 +69,6 @@
     </div>
   </div>
   <div class="flex flex-col w-full h-full">
-    <!-- TOP BAR -->
-    <div
-      class="flex items-center justify-between py-9 px-10 w-full h-16 border-b"
-    >
-      <div class="flex items-center gap-4">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="{1.5}"
-          stroke="currentColor"
-          class="size-6 cursor-pointer"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15.75 19.5 8.25 12l7.5-7.5"
-          />
-        </svg>
-        <span>{{ "Program" }}</span>
-      </div>
-      <div class="hidden gap-2 cursor-pointer md:flex">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
-          />
-        </svg>
-        <div class="flex flex-col">
-          <span class="font-medium">Secure Communication</span>
-          <span class="text-xs">(2 new messages)</span>
-        </div>
-      </div>
-    </div>
-    <!-- MAIN CONTENT -->
-    <div class="flex p-4 w-full h-full bg-slate-200">Content</div>
+    <router-outlet></router-outlet>
   </div>
 </main>
